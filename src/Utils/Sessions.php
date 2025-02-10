@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App;
+namespace src\Utils;
 
 class Sessions
 {
