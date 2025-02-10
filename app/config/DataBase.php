@@ -1,4 +1,11 @@
 <?php
+
+namespace App\Config;
+
+use PDO;
+use PDOException;
+use Exception;
+
 class Database {
     
     private static $instance = null;
@@ -6,26 +13,29 @@ class Database {
     
     private $connection;
 
-    private $servername = "localhost";    
-    private $dbname = "DB"; 
-    private $port = "5432"; 
-    private $username = "root";     
-    private $password = "Abdoabdell";     
+    private string $servername = "localhost";    
+    private string $dbname = "DB"; 
+    private string $port = "5432"; 
+    private string $username = "root";     
+    private string $password = "Abdoabdell";     
 
     private function __construct() {
         try {
-            
+
+
+            $dsn = "pgsql:host = {$this->servername};
+            port = {$this->port};
+            dbname = {$this->dbname}";
             $this->connection = new PDO(
-                "mysql:host=" . $this->servername . 
-                ";dbname=" . $this->dbname, 
-                ";port="$this->port,
+                $dsn,
                 $this->username, 
                 $this->password,
-            );
-            
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false
+                ]);
         } catch (PDOException $e) {
-            
             echo "Erreur de connexion à la base de données: " . $e->getMessage();
             exit();
         }
@@ -34,15 +44,21 @@ class Database {
     public static function getInstance() {
         
         if (self::$instance === null) {
-            self::$instance = new Database();
+            self::$instance = new self();
         }
 
-        return self::$instance->connection;
+        return self::$instance;
+    }
+
+    public function getConnection(): PDO {
+        return $this->connection;
     }
 
     
-    public function __clone() {}
+    private function __clone() {}
 
-    public function __wakeup() {}
+    public function __wakeup() {
+        throw new exception ("La redéclaration de cette classe n'est pas autoriser");
+    }
 }
 

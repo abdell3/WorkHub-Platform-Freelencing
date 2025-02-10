@@ -1,89 +1,66 @@
-<!-- <?php
+<?php
 
-// require_once dirname(__DIR__, 1) . '/App/utils/Sessions.php';
-// require_once dirname(__DIR__, 1) . '/App/utils/AuthManager.php';
+use App\Controllers\AuthController;
+session_start();
 
-// Sessions::start();
 
-// $error = '';
+if (isset($_SESSION['user_id'])) {
+    header("Location: ../dashboard.php");
+    exit();
+}
 
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     // var_dump($_POST['password']);die();
-//     $email = $_POST['email'];
-//     $password = $_POST['password'];
-    
-   
-//     $auth = new Auth();
-//     $user = $auth->login($email, $password);
-    
-//     if ($user) {
-//         $_SESSION['user'] = $user; 
-//         // var_dump($_SESSION['user']);die();
-//         if ($user['role_id'] === 1) {
-//             header("Location: /Plateforme-de-Cours-en-Ligne/App/Views/EtudiantDashboard.php");
-//             exit();
-//         } elseif ($user['role_id'] === 2) {
-//             header("Location: /Plateforme-de-Cours-en-Ligne/App/Views/EnseignantDashboard.php");
-//             exit();
-//         } elseif ($user['role_id'] === 3) {
-//             header("Location: /Plateforme-de-Cours-en-Ligne/App/Views/AdminsDashboard.php");
-//             exit();
-//         } else {
-//             echo "Rôle non reconnu.";
-//             exit();
-//         }
-//     } else {
-//         echo "Email ou mot de passe incorrect.";
-//     }
-// }
-// ?>
+$error = null;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $auth = new AuthController();
+    $result = $auth->login(trim($_POST["email"]), trim($_POST["password"]));
+
+    if ($result === true) {
+        switch ($_SESSION['role_id']) {
+            case 1:
+                header("Location: /dashboard");
+                break;
+            case 2:
+                header("Location: /dashboard");
+                break;
+            case 3:
+                header("Location: /dashboard");
+                break;
+            default:
+                header("Location: /dashboard");
+        }
+        exit();
+    } else {
+        $error = $result;
+    }
+}
+?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
+    <title>Connexion - Upwork Clone</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex items-center justify-center h-screen bg-gray-100">
-    <div class="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
-        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Connexion</h1>
-        
-        <?php if ($error): ?>
-            <div class="mb-4 p-4 text-sm text-red-700 bg-red-100 border border-red-300 rounded-lg">
-                <?php echo htmlspecialchars($error); ?>
-            </div>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-xl">
+        <h2 class="text-2xl font-bold text-center text-gray-700">Connexion</h2>
+        <?php if (isset($error)) : ?>
+            <p class="text-red-500 text-center"> <?= htmlspecialchars($error) ?> </p>
         <?php endif; ?>
-
-        <form method="post" action="" class="space-y-4">
+        <form action="login.php" method="POST" class="space-y-4">
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">Email :</label>
-                <input 
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    required 
-                    class="w-full p-3 mt-1 border rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                >
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" name="email" id="email" required class="w-full p-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-300">
             </div>
             <div>
-                <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe :</label>
-                <input 
-                    type="password" 
-                    name="password" 
-                    id="password" 
-                    required 
-                    class="w-full p-3 mt-1 border rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                >
+                <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+                <input type="password" name="password" id="password" required class="w-full p-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-300">
             </div>
-            <button 
-                type="submit" 
-                class="w-full py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-                Se connecter
-            </button>
+            <button type="submit" class="w-full p-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Se connecter</button>
         </form>
+        <p class="text-sm text-center text-gray-600">Pas encore de compte ? <a href="register.php" class="text-indigo-500">S'inscrire</a></p>
     </div>
 </body>
-</html> -->
+</html>
