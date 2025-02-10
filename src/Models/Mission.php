@@ -101,18 +101,18 @@ use src\Models\User;
       $this->freelance_proposition = $value;
     }
 
-    public function __toString() {
-        return 
-         "Id : " . $this->id.  
-         " , Nom: " .$this->nom.  
-         " , Prenom: " .$this->prenom.     
-         " , status : " .$this->status . 
-         " , email : " . $this->email  . 
-         " , mot de passe : " . $this->motDePasse . 
-         " photo : " . $this->image . 
-         " , Role : " . $this->role . 
-         " , Role_ID : " . $this->role_id . "" ;
-    }
+    // public function __toString() {
+    //     return 
+    //      "Id : " . $this->id.  
+    //      " , Nom: " .$this->nom.  
+    //      " , Prenom: " .$this->prenom.     
+    //      " , status : " .$this->status . 
+    //      " , email : " . $this->email  . 
+    //      " , mot de passe : " . $this->motDePasse . 
+    //      " photo : " . $this->image . 
+    //      " , Role : " . $this->role . 
+    //      " , Role_ID : " . $this->role_id . "" ;
+    // }
 
 
     }
