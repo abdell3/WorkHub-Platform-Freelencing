@@ -15,6 +15,11 @@ class HomeController extends Controller
         //     new Journal('testtest', '2024')
         // ];
 
-        // $this->render('index', ['journals'=> $journals]);
+        $this->render('index', []);
+    }
+
+    public function test(){
+        $this->render('login', []);
+
     }
 }
