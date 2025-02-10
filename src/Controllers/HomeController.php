@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controllers;
+namespace src\Controllers;
 
-use App\Controller;
-use App\Models\Journal;
+use src\Controller;
+
 
 class HomeController extends Controller
 {

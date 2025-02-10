@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controllers;
+namespace src\Controllers;
 
 
-use App\config\Database;
-use App\Controller;
-use App\Sessions;
+use src\Core\Config\Database;
+use src\Controller;
+use src\Utils\Sessions;
 use PDO;
 use PDOException;
 

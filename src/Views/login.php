@@ -1,6 +1,10 @@
 <?php
 
-use App\Controllers\AuthController;
+
+namespace src\Views;
+
+
+use src\Controllers\AuthController;
 session_start();
 
 
