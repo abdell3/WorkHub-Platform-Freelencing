@@ -17,7 +17,7 @@ class Database {
     private string $dbname = "DB"; 
     private string $port = "5432"; 
     private string $username = "root";     
-    private string $password = "Abdoabdell";     
+    private string $password =123456;     
 
     private function __construct() {
         try {
