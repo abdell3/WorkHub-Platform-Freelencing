@@ -1,16 +1,16 @@
 <?php
 
-namespace src\Controllers;
+namespace App\Controllers;
 
 
-use src\Core\Config\Database;
-use src\Controller;
-use src\Utils\Sessions;
+use App\Core\Config\DataBase;
+
+use App\Utils\Sessions;
 use PDO;
 use PDOException;
+use App\Controller;
 
-
-class AuthController  extends Controller
+class AuthController extends Controller
 {
     private $db;
 
@@ -38,7 +38,7 @@ class AuthController  extends Controller
                     return "Tous les champs sont obligatoires.";
                 }
 
-                $pdo = Database::getInstance()->getConnection();
+                $pdo = DataBase::getInstance()->getConnection();
         
                 $stmt = $pdo->prepare("SELECT id, role_id, password FROM users WHERE email = ?");
                 $stmt->execute([$email]);

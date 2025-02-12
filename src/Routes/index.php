@@ -1,8 +1,8 @@
 <?php
 
-use src\Controllers\AuthController;
-use src\Controllers\HomeController;
-use src\Router;
+use App\Controllers\AuthController;
+use App\Controllers\HomeController;
+use App\Router;
 
 $router = new Router();
 

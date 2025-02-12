@@ -1,8 +1,11 @@
 <?php
 
-namespace src\Models;
+namespace App\Models;
 
-use src\Models\Role;
+use App\Core\Config\DataBase;
+use App\Models\Role;
+use Exception;
+use PDO;
 
 class User
 {
@@ -16,6 +19,7 @@ class User
     private $phone;
     private $status;
     private $role_id;
+    private $db;
     
 
     public function __construct($nom,$prenom,$email,$motDePasse,$image,$role,$phone,$status)
@@ -28,7 +32,7 @@ class User
         $this->role = $role;
         $this->phone = $phone;
         $this->status = $status;
-
+        
     }
 
 
@@ -95,6 +99,95 @@ class User
     public function setRole_id($value) {
       $this->role_id = $value;
     }
+
+
+
+
+    public function createUser (string $nom, string $prenom, string $email, string $password, int $role_id, string $phone, string $image){
+        try {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $this->db = DataBase::getInstance()->getConnection();
+            $stmt = $this->db->prepare("
+                INSERT INTO users (nom, prenom, email, password, role_id, phone, image) 
+                VALUES (:nom, :prenom, :email, :password, :role_id, :phone, :image)
+            ");
+
+            return $stmt->execute([
+                ':nom' => $nom,
+                ':prenom' => $prenom,
+                ':email' => $email,
+                ':password' => $hashedPassword,
+                ':role_id' => $role_id,
+                ':phone' => $phone,
+                ':image' => $image
+            ]);
+        } catch (Exception $e) {
+            error_log("Erreur lors de la création de l'utilisateur : " . $e->getMessage());
+            return false;
+        }
+    }
+
+
+    public function getUsersById(int $id){
+        try {
+            $this->db = DataBase::getInstance()->getConnection();
+            $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
+            $stmt->execute([':id' => $id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        } catch (Exception $e) {
+            error_log("Erreur lors de la récupération de l'utilisateur : " . $e->getMessage());
+            return null;
+        }
+    }
+
+
+    public function getAllUsers(){
+        try {
+            $stmt = $this->db->query("SELECT * FROM users");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            error_log("Erreur lors de l'affichage des utilisateurs : " . $e->getMessage());
+            return [];
+        }
+    }
+
+
+    public function updateUser(int $id, string $nom, string $prenom, string $email, string $phone, ?string $image = null) {
+        try {
+            $stmt = $this->db->prepare("
+                UPDATE users 
+                SET nom = :nom, prenom = :prenom, email = :email, phone = :phone, image = :image 
+                WHERE id = :id
+            ");
+
+            return $stmt->execute([
+                ':id' => $id,
+                ':nom' => $nom,
+                ':prenom' => $prenom,
+                ':email' => $email,
+                ':phone' => $phone,
+                ':image' => $image
+            ]);
+        } catch (Exception $e) {
+            error_log("Erreur lors de la mise à jour de l'utilisateur : " . $e->getMessage());
+            return false;
+        }
+    }
+
+
+
+    public function deleteUser(int $id) {
+        try {
+            $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");
+            return $stmt->execute([':id' => $id]);
+        } catch (Exception $e) {
+            error_log("Erreur lors de la suppression de l'utilisateur : " . $e->getMessage());
+            return false;
+        }
+    }
+
+
+
 
     public function __toString() {
         return 
