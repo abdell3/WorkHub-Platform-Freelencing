@@ -1,9 +1,9 @@
 <?php 
 
-namespace src\Models;
+namespace App\Models;
 
 
-use src\Models\User;
+use App\Models\User;
 
 
     class Mission
@@ -109,7 +109,8 @@ use src\Models\User;
     //      " , status : " .$this->status . 
     //      " , email : " . $this->email  . 
     //      " , mot de passe : " . $this->motDePasse . 
-    //      " photo : " . $this->image . 
+    //      " photo : " . $this->image d. 
+    //      " photo : " . $this->image d. 
     //      " , Role : " . $this->role . 
     //      " , Role_ID : " . $this->role_id . "" ;
     // }

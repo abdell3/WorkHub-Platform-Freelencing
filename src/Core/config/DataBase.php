@@ -1,12 +1,12 @@
 <?php
 
-namespace src\Core\Config;
+namespace App\Core\Config;
 
 use PDO;
 use PDOException;
 use Exception;
 
-class Database {
+class DataBase {
     
     private static $instance = null;
     
@@ -48,7 +48,7 @@ class Database {
         return self::$instance;
     }
 
-    public function getConnection(): PDO {
+    public function getConnection() {
         return $this->connection;
     }
 
