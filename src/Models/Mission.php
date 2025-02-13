@@ -101,6 +101,21 @@ use App\Models\User;
       $this->freelance_proposition = $value;
     }
 
+
+
+    public function createMission($mission_nom,
+    $client_demande,
+    $status,
+    $progression,
+    $prix_init,
+    $prix_proposer,
+    $prix_final,
+    $freelance_proposition){
+      $sql = "INSERT INTO mission (mission_nom, client_demande, status, progression, prix, client, freelance, prix_proposer, prix_final, freelance_proposition) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      $stmt = $this->db->prepare($sql);
+      return $stmt->execute([$mission_nom, $client_demande, $status, $progression, $prix_proposer, $prix_final, $freelance_proposition]);
+    }
+
     // public function __toString() {
     //     return 
     //      "Id : " . $this->id.  
